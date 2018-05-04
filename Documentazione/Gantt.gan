@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?><project name="Untitled Gantt Project" company="" webLink="http://" view-date="2018-01-29" view-index="0" gantt-divider-location="294" resource-divider-location="300" version="2.8.6" locale="it_CH">
+<?xml version="1.0" encoding="UTF-8"?><project name="Untitled Gantt Project" company="" webLink="http://" view-date="2018-03-12" view-index="0" gantt-divider-location="436" resource-divider-location="300" version="2.8.6" locale="it">
     <description/>
     <view zooming-state="default:6" id="gantt-chart">
-        <field id="tpd3" name="Nome" width="164" order="0"/>
-        <field id="tpd4" name="Data d'inizio" width="63" order="1"/>
-        <field id="tpd5" name="Data di fine" width="63" order="2"/>
+        <field id="tpd3" name="Nome" width="278" order="0"/>
+        <field id="tpd4" name="Data d'inizio" width="83" order="1"/>
+        <field id="tpd5" name="Data di fine" width="71" order="2"/>
     </view>
     <view id="resource-table">
         <field id="0" name="Nome" width="210" order="0"/>
@@ -39,18 +39,25 @@
             <task id="11" name="Risoluzione dubbi" meeting="false" start="2018-03-12" duration="1" complete="0" expand="true"/>
             <task id="12" name="Analisi dei costi" meeting="false" start="2018-03-12" duration="1" complete="0" expand="true"/>
         </task>
-        <task id="1" name="Progettazione" meeting="false" start="2018-02-05" duration="26" complete="0" expand="true">
+        <task id="1" name="Progettazione" meeting="false" start="2018-03-12" duration="1" complete="0" expand="true">
             <task id="17" name="Gantt" meeting="false" start="2018-03-12" duration="1" complete="0" expand="true"/>
-            <task id="21" name="Design della struttura" meeting="false" start="2018-02-05" duration="1" complete="0" expand="true"/>
         </task>
-        <task id="20" name="Implementazione" meeting="false" start="2018-01-29" duration="6" complete="0" expand="true">
-            <task id="22" name="Utilizzo di Fishino Guppy" meeting="false" start="2018-02-05" duration="1" complete="0" expand="true"/>
-            <task id="24" name="attività_24" meeting="false" start="2018-01-29" duration="1" complete="0" expand="true"/>
+        <task id="20" name="Implementazione" meeting="false" start="2018-03-23" duration="41" complete="0" expand="true">
+            <task id="22" name="Utilizzo di Fishino Guppy" meeting="false" start="2018-03-23" duration="16" complete="0" expand="true"/>
+            <task id="24" name="Nuovo array di caratteri" meeting="false" start="2018-03-23" duration="1" complete="0" expand="true"/>
+            <task id="26" name="Utilizzo striscia Led DotStar" meeting="false" start="2018-04-13" duration="1" complete="0" expand="true"/>
+            <task id="27" name="Montaggio su un nuovo supporto" color="#8cb6ce" meeting="false" start="2018-04-20" duration="6" complete="0" thirdDate="2018-04-27" thirdDate-constraint="0" expand="true"/>
+            <task id="28" name="Visualizzare sull'orologio tramite wifi" meeting="false" start="2018-04-27" duration="6" complete="0" expand="true"/>
+            <task id="30" name="Sincronizzare l'orario con server NPT" color="#8cb6ce" meeting="false" start="2018-05-04" duration="1" complete="0" thirdDate="2018-01-29" thirdDate-constraint="0" expand="true"/>
+            <task id="32" name="Possibilità di variare la velocità" meeting="false" start="2018-05-11" duration="1" complete="0" expand="true"/>
+            <task id="31" name="Miglioramenti" meeting="false" start="2018-05-11" duration="6" complete="0" expand="true"/>
         </task>
-        <task id="3" name="Test" meeting="false" start="2018-01-29" duration="1" complete="0" expand="true">
-            <task id="23" name="attività_23" meeting="false" start="2018-01-29" duration="1" complete="0" expand="true"/>
+        <task id="3" name="Test" meeting="false" start="2018-04-13" duration="21" complete="0" expand="true">
+            <task id="23" name="Funzionamento di Fishino" meeting="false" start="2018-04-13" duration="1" complete="0" expand="true"/>
+            <task id="36" name="Funzionamento della nuova striscia" color="#8cb6ce" meeting="false" start="2018-04-13" duration="1" complete="0" thirdDate="2018-01-29" thirdDate-constraint="0" expand="true"/>
+            <task id="38" name="Funzionamento delle nuove lettere" meeting="false" start="2018-04-13" duration="1" complete="0" expand="true"/>
+            <task id="37" name="Funzionameto dell'orologio con server" meeting="false" start="2018-05-11" duration="1" complete="0" expand="true"/>
         </task>
-        <task id="4" name="attività_23" meeting="false" start="2018-05-18" duration="1" complete="0" expand="true"/>
         <task id="5" name="Presentazione" meeting="false" start="2018-05-11" duration="6" complete="0" expand="true"/>
         <task id="6" name="Documentazione" meeting="false" start="2018-03-12" duration="50" complete="0" expand="true"/>
     </tasks>
