@@ -1,19 +1,27 @@
 
-/*
-	WiFi UDP Send and Receive String
-	
-	This sketch wait an UDP packet on localPort using a WiFi shield.
-	When a packet is received an Acknowledge packet is sent to the client on port remotePort
-	
-	created 30 December 2012
-	by dlf (Metodo2 srl)
-	
-	Adapted to Fishino by Massimo Del Fedele on 15/02/2016
-
- */
+#include <Adafruit_DotStar.h>
 #include <Fishino.h>
 #include <SPI.h>
 
+#define NUMPIXELS 144 // Number of LEDs in strip (numero di led della striscia)
+
+// Here's how to control the LEDs from any two pins:
+// pin di controllo della striscia
+#define DATAPIN   6
+#define CLOCKPIN   7
+
+// oggetto per poter controllare la striscia
+Adafruit_DotStar strip = Adafruit_DotStar(
+  NUMPIXELS, DATAPIN, CLOCKPIN, DOTSTAR_BRG);
+// The last parameter is optional -- this is the color data order of the
+// DotStar strip, which has changed over time in different production runs.
+// Your code just uses R,G,B colors, the library then reassigns as needed.
+// Default is DOTSTAR_BRG, so change this if you have an earlier strip.
+
+// Hardware SPI is a little faster, but must be wired to specific pins
+// (Arduino Uno = pin 11 for data, 13 for clock, other boards are different).
+//Adafruit_DotStar strip = Adafruit_DotStar(NUMPIXELS, DOTSTAR_BRG);
+  
 //////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////
 // CONFIGURATION DATA		-- ADAPT TO YOUR NETWORK !!!
@@ -33,9 +41,9 @@
 // obtained IP will be printed on serial port monitor
 // commentare la linea seguente per avere un IP dinamico tramite DHCP
 // l'IP ottenuto verrà visualizzato sul monitor seriale
-//#define IPADDR		192, 168,   1, 251
+//#define IPADDR		169, 254,   0, 40
 //#define GATEWAY		192, 168,   1,   1
-//#define NETMASK		255, 255, 255,   0
+//#define NETMASK		255, 255, 0,   0
 
 #endif
 
@@ -99,20 +107,17 @@ void printWifiStatus()
 // setup code
 // codice di inizializzazione
 void setup()
-{
+{ 
+  strip.begin(); // Initialize pins for output
+  strip.show();
 	// Initialize serial and wait for port to open
 	// Inizializza la porta seriale e ne attende l'apertura
 	Serial.begin(115200);
-	
-	// only for Leonardo needed
-	// necessario solo per la Leonardo
-	while (!Serial)
-		;
 
 	// reset and test WiFi module
 	// resetta e testa il modulo WiFi
 	while(!Fishino.reset())
-		Serial << F("Fishino RESET FAILED, RETRYING...\n");
+	Serial << F("Fishino RESET FAILED, RETRYING...\n");
 	Serial << F("Fishino WiFi RESET OK\n");
 
 	// go into station mode
@@ -158,9 +163,28 @@ void setup()
 	Udp.begin(localPort);
 }
 
+//variabili per controllare se i dati sono già stati letti
+bool cLedN = false;
+bool cRed = false;
+bool cGreen = false;
+bool cBlue = false;
+//variabili per contenere i diversi dati
+int nLed = 0;
+int color[3] = {0,0,0};
+
 void loop()
 {
-
+  //azzero le variabili di controllo 
+  cLedN = false;
+  cRed = false;
+  cGreen = false;
+  cBlue = false;
+  //accendo i led con gli ultimi dati che ho ricevuto
+  for(int i = 0; i < nLed; i++){
+    strip.setPixelColor(i,color[1],color[0],color[2]);
+  }
+  strip.show();
+  
 	// if there's data available, read a packet
 	// se ci sono dati in arrivo, li stampa
 	int packetSize = Udp.parsePacket();
@@ -182,11 +206,42 @@ void loop()
 
 		Serial << F("Contents:\n");
 		Serial.println(packetBuffer);
-
-		// send a reply, to the IP address and port that sent us the packet we received
-		// invia una risposta all'indirizzo IP e alla porta da cui proviene la richiesta
-		Udp.beginPacket(Udp.remoteIP(), Udp.remotePort());
-		Udp.write(ReplyBuffer);
-		Udp.endPacket();
-	}
+    //leggo il contenuto del pacchetto
+    for(int i = 0; i < 255; i++){
+       String s = "";
+       if(packetBuffer[i] == 'n' && !cLedN){
+          //leggo il numero di led da accendere
+          s = String(packetBuffer[i+1])+String(packetBuffer[i+2])+String(packetBuffer[i+3]);
+          Serial.println(s.toInt());
+          nLed = s.toInt();
+          cLedN = true;
+       }
+       else if(packetBuffer[i] == 'r' && !cRed){
+          //leggo il valore del rosso
+          s = String(packetBuffer[i+1])+String(packetBuffer[i+2])+String(packetBuffer[i+3]);
+          color[0] = s.toInt();
+          Serial.println(color[0]);
+          cRed = true;
+       }
+       else if(packetBuffer[i] == 'g' && !cGreen){
+          //leggo il valore del verde
+          s = String(packetBuffer[i+1])+String(packetBuffer[i+2])+String(packetBuffer[i+3]);
+          color[1] = s.toInt();
+          Serial.println(color[1]);
+          cGreen = true;
+       }
+       else if(packetBuffer[i] == 'b' && !cBlue){
+          //leggo il valore del blu
+          s = String(packetBuffer[i+1])+String(packetBuffer[i+2])+String(packetBuffer[i+3]);
+          color[2] = s.toInt();
+          Serial.println(color[2]);
+          cBlue = true;
+       }
+    }  
+    // send a reply, to the IP address and port that sent us the packet we received
+    // invia una risposta all'indirizzo IP e alla porta da cui proviene la richiesta
+    Udp.beginPacket(Udp.remoteIP(), Udp.remotePort());
+    Udp.write(ReplyBuffer);
+    Udp.endPacket();        
+  }
 }
